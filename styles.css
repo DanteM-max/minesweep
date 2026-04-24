@@ -4,3 +4,11 @@
 .square1 {
     background-color:#dddddd
 }
+
+.square {
+    user-select: none;
+    cursor: pointer;
+    height: 100px;
+    width: 100px;
+    display: inline-block;
+}

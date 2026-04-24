@@ -15,15 +15,35 @@ for (let row = 0; row < 8; row++) {
         } else {
             square.classList.add("square0");
         }
-        square.style.height = "160px";
-        square.style.width = "160px";
-        square.style.display = "inline-block";
-        square.addEventListener('contextmenu', (event) => {
-            event.preventDefault();
-            
-        })
+        square.classList.add("square");
+        square.dataset.row = row;
+        square.dataset.col = col;
+        rowArr.push("undecided");
         boardDiv.appendChild(square);
     }
+    matrix.push(rowArr);
+    rowArr = [];
     boardDiv.appendChild(document.createElement("br"));
 }
 
+function placeBombs(event) {
+    matrix[event.target.dataset.row][event.target.dataset.col] = "no bomb";
+    for (let i= 0; i < 10; i++) {
+        let position = matrix[random(0,9)][random(0,9)];
+        if (position = "undecided") {
+            position = "bomb";
+        }
+    }
+    for (let r = 0; r < matrix.length; r++) {
+        for (let c = 0; c < matrix[0].length; c++) {
+            console.log("c++ forever");
+            if (matrix[r][c] == "undecided") {
+                matrix[r][c] = "no bomb";
+            }
+        }
+    }
+}
+
+function random(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min; // ONLY USE OF AI IN THE PROGRAM (I have a bad memory)
+}
