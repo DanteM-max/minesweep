@@ -1,1 +1,2 @@
 # minesweep
+- A game about a battlefield! Left click to dig. If you open up a spot without a bomb, great! It'll show you if there are any bombs nearby. Just look at the number. It shows how many bombs are nearby. 

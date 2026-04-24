@@ -18,16 +18,12 @@ for (let row = 0; row < 8; row++) {
         square.style.height = "160px";
         square.style.width = "160px";
         square.style.display = "inline-block";
+        square.addEventListener('contextmenu', (event) => {
+            event.preventDefault();
+            
+        })
         boardDiv.appendChild(square);
-        if (bombCount > 0 && (Math.random() >= (0.9))) {
-            rowArr.push("x");
-            bombCount--;
-        } else {
-            rowArr.push("o");
-        }
-        square.innerText = rowArr[col];
     }
-    matrix.push(rowArr);
-    rowArr = [];
     boardDiv.appendChild(document.createElement("br"));
 }
+
