@@ -1,8 +1,12 @@
+body {
+    font-size:30px;
+}
+
 .square0 {
-    background-color:#bbbbbb
+    background-color:#77ff77;
 }
 .square1 {
-    background-color:#dddddd
+    background-color:#44dd44;
 }
 
 .square {
@@ -11,4 +15,62 @@
     height: 100px;
     width: 100px;
     display: inline-block;
+    vertical-align: top;
+    line-height: 100px;
+    text-align:center;
+    box-sizing:border-box;
+    border: 2px dotted #5a5a5a;
+    background-size:0% 0%;
+    background-repeat: no-repeat;
+    background-position: center;
+    transition: background-color 0.25s, background-size 0.25s ease-in-out;
+    font-size:75px;
+}
+
+.clicked {
+    background-color: #ffd900;
+    pointer-events: none;
+}
+
+.clicked.square0 {
+    background-color: #eecc66;
+}
+
+.clicked.square1 {
+    background-color: #ffee99;
+}
+
+.flagged {
+    background-image: url(flag.jpg);
+    background-size: 80% 80% !important;
+}
+
+.bomb {
+    background-color: #f44336 !important;
+    background-image:url('explosion.jpg');
+    background-size: 100% 100% !important;
+    font-size:50px;
+}
+
+.square:hover {
+    background-color: #b0ffb0;
+}
+.flagged:hover {
+    background-color:#ffaaaa;
+}
+
+.win0 {
+    background-color: #ffff00;
+}
+
+.win1 {
+    background-color: #00ffff;
+}
+
+.win2 {
+    background-color: #ff00ff;
+}
+
+.win2 {
+    background-color: #0000ff;
 }

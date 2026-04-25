@@ -2,6 +2,18 @@ console.log("Script started");
 let boardDiv = document.querySelector("#board");
 let matrix = [];
 let rowArr = [];
+let bombInput = document.getElementById("bombs");
+bombInput.addEventListener('input', function() {
+    if (this.value === "") {
+        return;
+    }
+    if (parseInt(this.value) > 15) {
+        this.value = 15;
+    }
+    if (parseInt(this.value) < 0) {
+        this.value = 0;
+    }
+})
 for (let row = 0; row < 8; row++) {
     for (let col = 0; col < 10; col++) {
         let squareNum = (10*row) + col;
@@ -16,6 +28,10 @@ for (let row = 0; row < 8; row++) {
         }
         square.classList.add("square");
         square.addEventListener('click',placeBombs);
+        square.addEventListener('contextmenu', function(event) {
+            event.preventDefault();
+            flag(event);
+        })
         square.dataset.row = row;
         square.dataset.col = col;
         rowArr.push("undecided");
@@ -26,19 +42,37 @@ for (let row = 0; row < 8; row++) {
     boardDiv.appendChild(document.createElement("br"));
     console.log(matrix);
 }
+let gameState = "not started";
 
 function placeBombs(event) {
+    if (gameState === "started") {
+        let clickedRow = parseInt(event.target.dataset.row);
+        let clickedCol = parseInt(event.target.dataset.col);
+
+        revealSquare(clickedRow, clickedCol);
+        return;
+    }
+
+    gameState = "started";
+    let staRt = parseInt(event.target.dataset.row);
+    let staCt = parseInt(event.target.dataset.col);
+    let amount = bombInput.value;
+    if (amount == 0) {
+        alert("Sorry, gotta put something in the box. Usually there's 10 bombs.");
+        location.reload();
+        return;
+}
     matrix[event.target.dataset.row][event.target.dataset.col] = "no bomb";
     console.log(matrix[event.target.dataset.row][event.target.dataset.col]);
-    for (let i= 0; i < 10; i++) {
+    for (let i= 0; i < amount; i++) {
         let rowForPos = random(0,7), colForPos = random(0,9);
-        let position = matrix[rowForPos][colForPos];
-        console.log(position);
-        if (position == "undecided") {
-            position = "bomb";
+        let isNearFirstClick = Math.abs(rowForPos - staRt) <= 1 && Math.abs(colForPos-staCt) <= 1;
+        if (matrix[rowForPos][colForPos] == "undecided" && !isNearFirstClick) {
             matrix[rowForPos][colForPos] = "bomb";
+        } else {
+            i--;
         }
-        console.log("(" + (rowForPos+0) + "," + (colForPos+0) + "): " + position);
+        console.log("(" + (rowForPos+0) + "," + (colForPos+0) + "): " + matrix[rowForPos][colForPos]);
     }
     for (let r = 0; r < matrix.length; r++) {
         for (let c = 0; c < matrix[0].length; c++) {
@@ -47,21 +81,22 @@ function placeBombs(event) {
             }
             console.log(r+ ", " + c + " matrix value at the position is " + matrix[r][c]);
             let bombCount = 0;
-            rowLoop: for (let rowForBombCount = r-1; rowForBombCount <= r+1; rowForBombCount++) {
-                colLoop: for (let colForBombCount = c-1; colForBombCount <= c+1; colForBombCount++) {
-                    
-                    if (rowForBombCount < 0 || rowForBombCount > 7 || colForBombCount < 0 || colForBombCount > 9) {
-                        continue;
+            if (matrix[r][c] !== "bomb") {
+                rowLoop: for (let rowForBombCount = r-1; rowForBombCount <= r+1; rowForBombCount++) {
+                    colLoop: for (let colForBombCount = c-1; colForBombCount <= c+1; colForBombCount++) {
+                        
+                        if (rowForBombCount < 0 || rowForBombCount > 7 || colForBombCount < 0 || colForBombCount > 9) {
+                            continue;
+                        }
+                        if (matrix[rowForBombCount][colForBombCount] == "bomb") {
+                            console.log(bombCount + " THERE'S A BOMB");
+                            bombCount++;
+                            console.log(bombCount);
+                        }
+                        
+                        console.log(r+ ", " + c + " matrix value at the position is " + matrix[r][c]);
                     }
-                    if (matrix[rowForBombCount][colForBombCount] == "bomb") {
-                        console.log(bombCount + " THERE'S A BOMB");
-                        bombCount++;
-                        console.log(bombCount);
-                    }
-                    
-                    console.log(r+ ", " + c + " matrix value at the position is " + matrix[r][c]);
                 }
-
             }
 
             if (bombCount != 0) {
@@ -70,8 +105,11 @@ function placeBombs(event) {
             }
         }
     }
+    let clickedRow = parseInt(event.target.dataset.row);
+    let clickedCol = parseInt(event.target.dataset.col);
 
-    
+    revealSquare(clickedRow, clickedCol);
+    checkWin();
 }
 
 function random(min, max) {
@@ -80,7 +118,7 @@ function random(min, max) {
 
 function revealSquare(r,c) { // Ai *inspired*, but code might appear AI-generated
     //keep in bounds
-    if (r < 0 || r > 7 || c < 0 || c < 9) {
+    if (r < 0 || r > 7 || c < 0 || c > 9) {
         return;
     }
 
@@ -97,6 +135,76 @@ function revealSquare(r,c) { // Ai *inspired*, but code might appear AI-generate
     targetSquare.classList.add("clicked");
     let value = matrix[r][c];
     if (value === "no bomb") {
-        targetSquare.innerText
+        targetSquare.innerText = "";
+    } else if (value !== "bomb") {
+        targetSquare.innerText = value;
+    } else {
+        gameState = "lost";
+        
+        
+        targetSquare.classList.add("bomb");
+        targetSquare.classList.remove("clicked");
+        targetSquare.innerText = "💣";
+        
+        setTimeout(function() {
+            targetSquare.innerText = '';
+            setTimeout(function() {
+                alert("Sorry, you blew up. Please restart to try again.");
+            
+                location.reload(true);  
+            },50);
+            
+        },250);
+    }
+
+    if (value === "no bomb") {
+        for (let rowOff = -1; rowOff <= 1; rowOff++) {
+            for (let colOff = -1; colOff<=1; colOff++) {
+                revealSquare(r + rowOff, c + colOff); //recursion taught by Gemini
+            }
+        }
+    }
+    checkWin();
+}
+let bombCounter = document.getElementById("amount");
+function flag(event) { 
+    event.target.classList.toggle("flagged");
+    let bombs = document.querySelectorAll(".flagged").length;
+    let amount = bombInput.value;
+    bombCounter.innerText = (amount - bombs);
+    checkWin();
+}
+
+function checkWin() {
+    if (gameState !== "started") {
+        return;
+    }
+    let squares = document.querySelectorAll('.square');
+    let safeCount = 0; 
+    let flaggedCount = 0; 
+    let mineCount = 0; 
+    for (let i = 0; i < squares.length; i++) {
+        if (squares[i].classList.contains("clicked")) {
+            safeCount++;
+        }
+        if (squares[i].classList.contains("flagged") && matrix[Math.floor(i/10)][i%10] !== "bomb") {
+            flaggedCount++;
+        }
+        if (squares[i].classList.contains("flagged") && matrix[Math.floor(i/10)][i%10] === "bomb") {
+            mineCount++;
+        }
+    }
+    let amount = bombInput.value;
+    if (safeCount == 80-amount) {
+        gameState = "won";
+        alert("Yay! You won!");
+        squares.forEach((square,i) => {
+            setTimeout(function() {
+                squares[i].innerText = '';
+                squares[i].className = '';
+                squares[i].classList.add("square");
+                squares[i].classList.add("win" + (random(0,3)));
+            },i*25)
+        })
     }
 }
