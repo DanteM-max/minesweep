@@ -3,20 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Dante's Minesweeper Clone - Custom Bombs!</title>
     <link rel="stylesheet" href="styles.css">
     <script src="script.js" defer></script>
 </head>
 <body>
-    <h1>THE ASTRONAUT</h1>
-    <label for="bombs">How many bombs do you want on the board? Can go up to 15. <br> Generally, 10 or more bombs brings it closer to an actual Minesweeper.</label>
-    <input id="bombs" type="number" max="15">
+    <h1>THE MINEFIELD</h1>
+    <label for="bombs">How many bombs do you want on the board? Can go up to 25. <br> Generally, 10 or more bombs brings it closer to an actual Minesweeper.</label>
+    <input id="bombs" type="number" max="25">
     <div id="board"></div>
     <p>Bomb count: <span id="amount"></span></p>
     <br>
     <br>
     <p>Welcome to Minesweeper! Left click to dig up a square. If it isn't a bomb, it'll be a yellow color. Right click to flag a square as a bomb. </p>
     <p>What do the numbers mean? Well, if there's a 1, there's 1 bomb around that square. If there's an 8, there are 8 bombs around that square. </p>
-    <footer style="font-size:20px;">Unexpected behaviour can occur when the amount of bombs is less than 6. </footer>
+    <p><span class="number1">1</span><br><span class="number2">2</span><br><span class="number3">3</span><br><span class="number4">4</span><br><span class="number5">5</span><br><span class="number6">6</span><br><span class="number7">7</span><br><span class="number8">8</span><br></p>
+    <footer style="font-size:20px;">Unexpected behaviour can occur when the amount of bombs on the board is less than 6. </footer>
 </body>
 </html>

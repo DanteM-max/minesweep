@@ -74,3 +74,34 @@ body {
 .win2 {
     background-color: #0000ff;
 }
+
+.number1 {
+    color:rgb(7,255,0);
+}
+
+.number2 {
+    color:rgb(38,224,0);
+}
+
+.number3 {
+    color: rgb(69,193,0);
+}
+
+.number4 {
+    color:rgb(131,100,0);
+}
+.number5 {
+    color:rgb(162,100,0);
+}
+
+.number6 {
+    color:rgb(193,69,0);
+}
+
+.number7 {
+    color:rgb(224,38,0);
+}
+
+.number8 {
+    color:rgb(255,7,0);
+}

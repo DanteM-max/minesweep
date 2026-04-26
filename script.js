@@ -7,8 +7,8 @@ bombInput.addEventListener('input', function() {
     if (this.value === "") {
         return;
     }
-    if (parseInt(this.value) > 15) {
-        this.value = 15;
+    if (parseInt(this.value) > 25) {
+        this.value = 25;
     }
     if (parseInt(this.value) < 0) {
         this.value = 0;
@@ -138,6 +138,7 @@ function revealSquare(r,c) { // Ai *inspired*, but code might appear AI-generate
         targetSquare.innerText = "";
     } else if (value !== "bomb") {
         targetSquare.innerText = value;
+        targetSquare.classList.add("number" + value);
     } else {
         gameState = "lost";
         
