@@ -209,3 +209,7 @@ function checkWin() {
         })
     }
 }
+
+function reset() {
+    location.reload(true);
+}
